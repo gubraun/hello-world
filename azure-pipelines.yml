@@ -10,7 +10,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 container:
-  image: 'gubraun/coverity:latest'
+  image: 'gubraun/coverity:2019.06'
   endpoint: gubraun-docker
   options: --hostname build-vm --mac-address 02:42:ac:11:00:03
 
