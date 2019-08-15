@@ -9,7 +9,7 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-container: 'ubuntu:16.04'
+container: 'gubraun/coverity:latest'
 
 steps:
 - script: echo Hello, world!
