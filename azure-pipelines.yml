@@ -9,7 +9,9 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-container: 'gubraun/coverity:latest'
+container:
+  image: 'gubraun/coverity:latest'
+  endpoint: gubraun-docker
 
 steps:
 - script: echo Hello, world!
