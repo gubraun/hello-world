@@ -21,6 +21,9 @@ steps:
 - script: cc -o hello hello.c
   displayName: 'Compile C source file'
 
+- script: ./hello
+  displayName: 'Run a test'
+
 - script: |
     echo Add other tasks to build, test, and deploy your project.
     echo See https://aka.ms/yaml
