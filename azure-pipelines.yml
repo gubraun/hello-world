@@ -14,7 +14,7 @@ container:
   endpoint: gubraun-docker
 
 steps:
-- script: echo Hello, world!
+- script: cov-analyze --ident
   displayName: 'Run a one-line script'
 
 - script: |
