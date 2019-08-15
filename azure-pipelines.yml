@@ -17,7 +17,7 @@ container:
 steps:
 - script: |
     cov-analyze --ident
-	cov-configure --gcc
+    cov-configure --gcc
   displayName: 'Configure Coverity'
 
 - script: cov-build --dir idir gcc -o hello hello.c
