@@ -16,7 +16,10 @@ container:
 
 steps:
 - script: cov-analyze --ident
-  displayName: 'Run a one-line script'
+  displayName: 'Print Coverity version'
+
+- script: cc -o hello hello.c
+  displayName: 'Compile C source file'
 
 - script: |
     echo Add other tasks to build, test, and deploy your project.
