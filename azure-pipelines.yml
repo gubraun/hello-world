@@ -12,6 +12,7 @@ pool:
 container:
   image: 'gubraun/coverity:latest'
   endpoint: gubraun-docker
+  options: --hostname build-vm --mac-address 02:42:ac:11:00:03
 
 steps:
 - script: cov-analyze --ident
