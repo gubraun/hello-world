@@ -17,10 +17,10 @@ container:
 steps:
 - script: |
     cov-analyze --ident
-    cov-configure --gcc
+    cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
-- script: cov-build --dir idir gcc -o hello hello.c
+- script: cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
   displayName: 'Compile C source file'
 
 - script: cov-analyze --dir idir 
