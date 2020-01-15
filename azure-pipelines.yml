@@ -15,8 +15,8 @@ pool:
 #  options: --hostname build-vm --mac-address 02:42:ac:11:00:03
 
 steps:
--script: az login
- displayName: 'Login into AZ'
+- script: az login
+  displayName: 'Login into AZ'
 
 #- script: |
 #    cov-analyze --ident
