@@ -26,7 +26,10 @@ steps:
   inputs:
     azureSubscription: azure-connection
     scriptType: bash
-    scriptPath: mount-coverity.sh
+    scriptLocation: inlineScript
+    inlineScript: |
+      sh mount-coverity.sh
+      df -h
  
 - script: |
     $(mntPath)/cov-analysis/bin/cov-analyze --ident
