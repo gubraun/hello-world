@@ -4,10 +4,7 @@
 # https://aka.ms/yaml
 
 variables:
-  resourceGroupNamee: coverity
-  storageAccountName: coveritystore
-  fileShareName: cov-analysis-share
-  mntPath: /mnt/$(storageAccountName)/$(fileShareName)
+  mntPath: /coverity
 
 trigger:
 - master
@@ -28,21 +25,18 @@ steps:
     scriptType: bash
     scriptPath: mount-coverity.sh
  
-- script: df
-  displayName: Check if mount worked
+- script: |
+    /coverity/cov-analysis/bin/cov-analyze --ident
+    /coverity/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
+  displayName: 'Configure Coverity'
 
-#- script: |
-#    cov-analyze --ident
-#    cov-configure --config coverity_config.xml --gcc
-#  displayName: 'Configure Coverity'
+- script: /coverity/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+  displayName: 'Compile C source file'
 
-#- script: cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
-#  displayName: 'Compile C source file'
+- script: /coverity/cov-analysis/bin/cov-analyze --dir idir 
+  displayName: 'Run Coverity analysis'
 
-#- script: cov-analyze --dir idir 
-#  displayName: 'Run Coverity analysis'
-
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#  displayName: 'Run a multi-line script'
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
