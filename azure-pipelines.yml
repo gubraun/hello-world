@@ -9,24 +9,27 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-container:
-  image: 'gubraun/coverity:2019.06'
-  endpoint: gubraun-docker
-  options: --hostname build-vm --mac-address 02:42:ac:11:00:03
+#container:
+#  image: 'gubraun/coverity:2019.06'
+#  endpoint: gubraun-docker
+#  options: --hostname build-vm --mac-address 02:42:ac:11:00:03
 
 steps:
-- script: |
-    cov-analyze --ident
-    cov-configure --config coverity_config.xml --gcc
-  displayName: 'Configure Coverity'
+-script: az login
+ displayName: 'Login into AZ'
 
-- script: cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
-  displayName: 'Compile C source file'
+#- script: |
+#    cov-analyze --ident
+#    cov-configure --config coverity_config.xml --gcc
+#  displayName: 'Configure Coverity'
 
-- script: cov-analyze --dir idir 
-  displayName: 'Run Coverity analysis'
+#- script: cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+#  displayName: 'Compile C source file'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+#- script: cov-analyze --dir idir 
+#  displayName: 'Run Coverity analysis'
+
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
