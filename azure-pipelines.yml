@@ -8,6 +8,7 @@ variables:
   storageAccountName: coveritystore
   fileShareName: cov-analysis-share
   mntPath: /mnt/$(storageAccountName)/$(fileShareName)
+  COVERITY_TOOL_HOME: $(mntPath)/cov-analysis
 
 trigger:
 - master
@@ -31,18 +32,26 @@ steps:
       sh mount-coverity.sh
       df -h
  
-- script: |
-    $(mntPath)/cov-analysis/bin/cov-analyze --ident
-    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
-  displayName: 'Configure Coverity'
+- task: synopsys-coverity@1
+  inputs:
+    coverityService: 'coverity-vm'
+    projectName: 'Azure-Hello-World'
+    streamName: 'Azure-Hello-World'
+    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
+    buildCommand: 'gcc -o hello hello.c'
 
-- script: $(mntPath)/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
-  displayName: 'Compile C source file'
+#- script: |
+#    $(mntPath)/cov-analysis/bin/cov-analyze --ident
+#    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
+#  displayName: 'Configure Coverity'
 
-- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
-  displayName: 'Run Coverity analysis'
+#- script: $(mntPath)/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+#  displayName: 'Compile C source file'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+#- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
+#  displayName: 'Run Coverity analysis'
+
+#- script: |
+#    echo Add other tasks to build, test, and deploy your project.
+#    echo See https://aka.ms/yaml
+#  displayName: 'Run a multi-line script'
