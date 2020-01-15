@@ -4,7 +4,10 @@
 # https://aka.ms/yaml
 
 variables:
-  mntPath: /coverity
+  resourceGroupName: coverity
+  storageAccountName: coveritystore
+  fileShareName: cov-analysis-share
+  mntPath: /mnt/$storageAccountName/$fileShareName
 
 trigger:
 - master
@@ -26,14 +29,14 @@ steps:
     scriptPath: mount-coverity.sh
  
 - script: |
-    /coverity/cov-analysis/bin/cov-analyze --ident
-    /coverity/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
+    $(mntPath)/cov-analysis/bin/cov-analyze --ident
+    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
-- script: /coverity/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+- script: $(mntPath)/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
   displayName: 'Compile C source file'
 
-- script: /coverity/cov-analysis/bin/cov-analyze --dir idir 
+- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
   displayName: 'Run Coverity analysis'
 
 - script: |
