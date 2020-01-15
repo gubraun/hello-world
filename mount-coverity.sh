@@ -20,4 +20,4 @@ storageAccountKey=$(az storage account keys list \
    --account-name $storageAccountName \
    --query "[0].value" | tr -d '"')
 
-sudo mount -t cifs $smbPath $mntPath -o vers=3.0,username=$storageAccountName,password=$storageAccountKey,serverino
+sudo mount -t cifs $smbPath $mntPath -o vers=3.0,username=$storageAccountName,password=$storageAccountKey,serverino,mfsymlinks
