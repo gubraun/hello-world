@@ -32,8 +32,7 @@ steps:
       df -h
  
 - script: |
-    export PATH=$PATH:$(mntPath)/cov-analysis/bin
-    cov-analyze --ident
+    sudo $(mntPath)/cov-analysis/bin/cov-analyze --ident
     $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
