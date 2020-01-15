@@ -30,10 +30,9 @@ steps:
     inlineScript: |
       sh mount-coverity.sh
       df -h
-      $(mntPath)/cov-analysis/bin/cov-analyze --ident
  
 - script: |
-    sudo $(mntPath)/cov-analysis/bin/cov-analyze --ident
+    $(mntPath)/cov-analysis/bin/cov-analyze --ident
     $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
