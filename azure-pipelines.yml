@@ -39,6 +39,7 @@ steps:
     streamName: 'Azure-Hello-World'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
+    allowUntrusted: true
 
 #- script: |
 #    $(mntPath)/cov-analysis/bin/cov-analyze --ident
