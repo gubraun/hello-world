@@ -15,8 +15,16 @@ pool:
 #  options: --hostname build-vm --mac-address 02:42:ac:11:00:03
 
 steps:
-- script: az login
-  displayName: 'Login into AZ'
+- task: AzureCLI@2
+  displayName: Azure CLI
+  inputs:
+    azureSubscription: azure-connection
+    scriptType: ps
+    scriptLocation: inlineScript
+    inlineScript: |
+        az --version
+        az account show
+
 
 #- script: |
 #    cov-analyze --ident
