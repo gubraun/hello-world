@@ -4,8 +4,7 @@ resourceGroupName="coverity"
 storageAccountName="coveritystore"
 fileShareName="cov-analysis-share"
 
-#mntPath="/mnt/$storageAccountName/$fileShareName"
-mntPath="/coverity"
+mntPath="/mnt/$storageAccountName/$fileShareName"
 sudo mkdir -p $mntPath
 
 # This command assumes you have logged in with az login
