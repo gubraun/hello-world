@@ -37,7 +37,7 @@ steps:
     coverityService: 'coverity-vm'
     projectName: 'Azure Hello World'
     streamName: 'az-hello-world'
-    checkIssues: true
+    checkIssues: false
     issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
