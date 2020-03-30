@@ -41,6 +41,8 @@ steps:
     issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
+    customCommandArgs: true
+    covCommitArgs: '--dataport 9090'
     allowUntrusted: true
 
 #- script: |
