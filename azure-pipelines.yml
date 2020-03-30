@@ -32,18 +32,27 @@ steps:
       sh mount-coverity.sh
       df -h
  
+#- task: synopsys-coverity@1
+#  inputs:
+#    coverityService: 'coverity-vm'
+#    projectName: 'Azure Hello World'
+#    streamName: 'az-hello-world'
+#    checkIssues: false
+#    issueView: 'Outstanding Issues'
+#    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
+#    buildCommand: 'gcc -o hello hello.c'
+#    allowUntrusted: true
+
 - task: synopsys-coverity@1
   inputs:
     coverityService: 'coverity-vm'
     projectName: 'Azure Hello World'
     streamName: 'az-hello-world'
-    checkIssues: false
-    issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'gcc -o hello hello.c'
-    coverityRunType: custom
-    customCoverityCommands: 'cov-analyze --dir $(Build.Repository.LocalPath)\idir'
+    coverityRunType: 'custom'
+    customCoverityCommands: 'cov-analyze --ident'
     allowUntrusted: true
+
 
 #- script: |
 #    $(mntPath)/cov-analysis/bin/cov-analyze --ident
