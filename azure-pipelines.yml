@@ -35,8 +35,8 @@ steps:
 - task: synopsys-coverity@1
   inputs:
     coverityService: 'coverity-vm'
-    projectName: 'Azure-Hello-World'
-    streamName: 'Azure-Hello-World'
+    projectName: 'Azure Hello World'
+    streamName: 'az-hello-world'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
     allowUntrusted: true
