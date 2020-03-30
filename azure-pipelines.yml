@@ -40,9 +40,9 @@ steps:
     checkIssues: false
     issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'gcc -o hello hello.c'
-    customCommandArgs: true
-    covCommitArgs: '--dataport 9090'
+#    buildCommand: 'gcc -o hello hello.c'
+    coverityRunType: custom
+    customCoverityCommands: 'cov-analyze --dir $(Build.Repository.LocalPath)\idir'
     allowUntrusted: true
 
 #- script: |
