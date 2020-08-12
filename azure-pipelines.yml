@@ -34,7 +34,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: '"coverity-analysis-2019.12" | "$(Agent.OS)"'
+    key: '"v2" | "coverity-analysis-2019.12" | "$(Agent.OS)"'
     path: $(COVERITY_TOOL_HOME)
     cacheHitVar: CACHE_RESTORED
   displayName: 'Cache Coverity Tool Installation'
@@ -46,6 +46,7 @@ steps:
     tar -xvzf cov-analysis-linux64-2019.12.tar.gz
     mv cov-analysis-linux64-2019.12 cov-analysis
     cp license.dat ./cov-analysis/bin
+    rm -rf jre jre7 architecture-analysis sdk dynamic-analysis forcheck doc
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
 
