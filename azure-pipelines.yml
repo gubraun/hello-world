@@ -32,13 +32,6 @@ steps:
       sh mount-coverity.sh
       df -h
 
-- task: CopyFiles@2
-  inputs:
-    SourceFolder: '$(mntPath)/cov-analysis-linux64-2019.12'
-    Contents: '**'
-    TargetFolder: '$(Build.Repository.LocalPath)'
-
- 
 #- task: synopsys-coverity@1
 #  inputs:
 #    coverityService: 'coverity-vm'
@@ -62,11 +55,11 @@ steps:
 #    allowUntrusted: true
 
 - script: |
-    $(Build.Repository.LocalPath)/cov-analysis-linux64-2019.12/bin/cov-analyze --ident
-    $(Build.Repository.LocalPath)/cov-analysis-linux64-2019.12/bin/cov-configure --config coverity_config.xml --gcc
+    $(mntPath)/cov-analysis/bin/cov-analyze --ident
+    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
-- script: $(Build.Repository.LocalPath)/cov-analysis-linux64-2019.12/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+- script: $(mntPath)/cov-analysis-linux64-2019.12/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
   displayName: 'Compile C source file'
 
 #- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
