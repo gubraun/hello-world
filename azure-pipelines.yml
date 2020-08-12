@@ -8,7 +8,7 @@ variables:
   storageAccountName: coveritystore
   fileShareName: cov-analysis-share
   mntPath: /mnt/$(storageAccountName)/$(fileShareName)
-  COVERITY_TOOL_HOME: $(mntPath)/cov-analysis
+  COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
 
 trigger:
 - master
@@ -31,6 +31,18 @@ steps:
     inlineScript: |
       sh mount-coverity.sh
       df -h
+
+- script: |
+    cd $(Agent.BuildDirectory)
+    tar -xvfz $(mntPath)/cov-analysis-linux64-2019.12.tar.gz
+    mv cov-analysis-linux64-2019.12 cov-analysis
+  displayName: 'Install Coverity'
+
+- task: Cache@2
+  inputs:
+    key: 'coverity-analysis-2019.12 | "$(Agent.OS)"'
+    path: $(COVERITY_TOOL_HOME)
+  displayName: 'Cache Coverity Tool Installation'
 
 #- task: synopsys-coverity@1
 #  inputs:
@@ -55,11 +67,11 @@ steps:
 #    allowUntrusted: true
 
 - script: |
-    $(mntPath)/cov-analysis/bin/cov-analyze --ident
-    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
+    $(COVERITY_TOOL_HOME)/bin/cov-analyze --ident
+    $(COVERITY_TOOL_HOME)/bin/cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
-- script: $(mntPath)/cov-analysis-linux64-2019.12/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+- script: $(COVERITY_TOOL_HOME)/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
   displayName: 'Compile C source file'
 
 #- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
