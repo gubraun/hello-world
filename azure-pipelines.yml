@@ -32,6 +32,13 @@ steps:
       sh mount-coverity.sh
       df -h
 
+- task: Cache@2
+  inputs:
+    key: '"coverity-analysis-2019.12" | "$(Agent.OS)"'
+    path: $(COVERITY_TOOL_HOME)
+    cacheHitVar: CACHE_RESTORED
+  displayName: 'Cache Coverity Tool Installation'
+
 - script: |
     cd $(Agent.BuildDirectory)
     cp $(mntPath)/cov-analysis-linux64-2019.12.tar.gz .
@@ -39,14 +46,8 @@ steps:
     tar -xvzf cov-analysis-linux64-2019.12.tar.gz
     mv cov-analysis-linux64-2019.12 cov-analysis
     cp license.dat ./cov-analysis/bin
+  condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
-    
-
-- task: Cache@2
-  inputs:
-    key: '"coverity-analysis-2019.12" | "$(Agent.OS)"'
-    path: $(COVERITY_TOOL_HOME)
-  displayName: 'Cache Coverity Tool Installation'
 
 #- task: synopsys-coverity@1
 #  inputs:
