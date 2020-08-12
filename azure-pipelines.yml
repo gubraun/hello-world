@@ -35,6 +35,7 @@ steps:
 - script: |
     cd $(Agent.BuildDirectory)
     cp $(mntPath)/cov-analysis-linux64-2019.12.tar.gz .
+    cp $(mntPath)/cov-analysis-linux64-2019.12/bin/license.dat .
     tar -xvzf cov-analysis-linux64-2019.12.tar.gz
     mv cov-analysis-linux64-2019.12 cov-analysis
     cp license.dat ./cov-analysis/bin
