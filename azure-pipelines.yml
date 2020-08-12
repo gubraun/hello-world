@@ -34,7 +34,7 @@ steps:
 
 - script: |
     cd $(Agent.BuildDirectory)
-    tar -xvfz $(mntPath)/cov-analysis-linux64-2019.12.tar.gz
+    tar -xvzf $(mntPath)/cov-analysis-linux64-2019.12.tar.gz
     mv cov-analysis-linux64-2019.12 cov-analysis
   displayName: 'Install Coverity'
 
