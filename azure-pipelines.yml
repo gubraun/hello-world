@@ -34,8 +34,7 @@ steps:
 
 - script: |
     cd $(Agent.BuildDirectory)
-    wget --no-check-certificate https://13.82.55.226:8443/downloadFile.htm?fn=cov-analysis-linux64-2019.12.tar.gz
-    wget --no-check-certificate https://13.82.55.226:8443/downloadFile.htm?fn=license.dat
+    cp $(mntPath)/cov-analysis-linux64-2019.12.tar.gz .
     tar -xvzf cov-analysis-linux64-2019.12.tar.gz
     mv cov-analysis-linux64-2019.12 cov-analysis
     cp license.dat ./cov-analysis/bin
