@@ -44,7 +44,7 @@ steps:
 
 - task: Cache@2
   inputs:
-    key: 'coverity-analysis-2019.12 | "$(Agent.OS)"'
+    key: '"coverity-analysis-2019.12" | "$(Agent.OS)"'
     path: $(COVERITY_TOOL_HOME)
   displayName: 'Cache Coverity Tool Installation'
 
