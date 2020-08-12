@@ -31,6 +31,8 @@ steps:
     inlineScript: |
       sh mount-coverity.sh
       df -h
+
+
  
 #- task: synopsys-coverity@1
 #  inputs:
@@ -55,11 +57,11 @@ steps:
 #    allowUntrusted: true
 
 - script: |
-    $(mntPath)/cov-analysis/bin/cov-analyze --ident
-    $(mntPath)/cov-analysis/bin/cov-configure --config coverity_config.xml --gcc
+    $(mntPath)/cov-analysis-linux64-2019.12/bin/cov-analyze --ident
+    $(mntPath)/cov-analysis-linux64-2019.12/bin/cov-configure --config coverity_config.xml --gcc
   displayName: 'Configure Coverity'
 
-- script: strace $(mntPath)/cov-analysis/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+- script: $(mntPath)/cov-analysis-linux64-2019.12/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
   displayName: 'Compile C source file'
 
 #- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
