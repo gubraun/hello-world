@@ -34,9 +34,13 @@ steps:
 
 - script: |
     cd $(Agent.BuildDirectory)
-    tar -xvzf $(mntPath)/cov-analysis-linux64-2019.12.tar.gz
+    wget https://13.82.55.226:8443/downloadFile.htm?fn=cov-analysis-linux64-2019.12.tar.gz
+    wget https://13.82.55.226:8443/downloadFile.htm?fn=license.dat
+    tar -xvzf cov-analysis-linux64-2019.12.tar.gz
     mv cov-analysis-linux64-2019.12 cov-analysis
+    cp license.dat ./cov-analysis/bin
   displayName: 'Install Coverity'
+    
 
 - task: Cache@2
   inputs:
