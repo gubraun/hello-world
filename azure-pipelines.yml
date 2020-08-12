@@ -50,16 +50,16 @@ steps:
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
 
-#- task: synopsys-coverity@1
-#  inputs:
-#    coverityService: 'coverity-vm'
-#    projectName: 'Azure Hello World'
-#    streamName: 'az-hello-world'
-#    checkIssues: false
-#    issueView: 'Outstanding Issues'
-#    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-#    buildCommand: 'gcc -o hello hello.c'
-#    allowUntrusted: true
+- task: synopsys-coverity@1
+  inputs:
+    coverityService: 'coverity-vm'
+    projectName: 'Azure Hello World'
+    streamName: 'az-hello-world'
+    checkIssues: false
+    issueView: 'Outstanding Issues'
+    coverityBuildDirectory: '$(Build.Repository.LocalPath)'
+    buildCommand: 'gcc -o hello hello.c'
+    allowUntrusted: true
 
 # Reproducer for issue #6 (error: p not supplied)
 #- task: synopsys-coverity@1
@@ -72,13 +72,13 @@ steps:
 #    customCoverityCommands: 'cov-analyze --ident'
 #    allowUntrusted: true
 
-- script: |
-    $(COVERITY_TOOL_HOME)/bin/cov-analyze --ident
-    $(COVERITY_TOOL_HOME)/bin/cov-configure --config coverity_config.xml --gcc
-  displayName: 'Configure Coverity'
+#- script: |
+#    $(COVERITY_TOOL_HOME)/bin/cov-analyze --ident
+#    $(COVERITY_TOOL_HOME)/bin/cov-configure --config coverity_config.xml --gcc
+#  displayName: 'Configure Coverity'
 
-- script: $(COVERITY_TOOL_HOME)/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
-  displayName: 'Compile C source file'
+#- script: $(COVERITY_TOOL_HOME)/bin/cov-build --config coverity_config.xml --dir idir gcc -o hello hello.c
+#  displayName: 'Compile C source file'
 
 #- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
 #  displayName: 'Run Coverity analysis'
