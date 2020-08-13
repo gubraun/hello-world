@@ -25,7 +25,7 @@ steps:
 # Pull Coverity analysis installation from cache
 - task: Cache@2
   inputs:
-    key: '"v3" | "coverity-analysis-2019.12" | "$(Agent.OS)"'
+    key: '"coverity-analysis-2020.06" | "$(Agent.OS)"'
     path: $(COVERITY_TOOL_HOME)
     cacheHitVar: CACHE_RESTORED
   displayName: 'Cache Coverity Tool Installation'
@@ -44,12 +44,11 @@ steps:
 
 - script: |
     cd $(Agent.BuildDirectory)
-    cp $(mntPath)/cov-analysis-linux64-2019.12.tar.gz .
-    cp $(mntPath)/cov-analysis-linux64-2019.12/bin/license.dat .
-    tar -xzf cov-analysis-linux64-2019.12.tar.gz
-    mv cov-analysis-linux64-2019.12 cov-analysis
+    cp $(mntPath)/cov-analysis-linux64-2020.06.tar.gz .
+    cp $(mntPath)/license.dat .
+    tar -xzf cov-analysis-linux64-2020.06.tar.gz
+    mv cov-analysis-linux64-2020.06 cov-analysis
     cp license.dat ./cov-analysis/bin
-    rm -rf jre jre7 architecture-analysis sdk dynamic-analysis forcheck doc
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
 
@@ -71,6 +70,7 @@ steps:
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
     allowUntrusted: true
+
 
 # Reproducer for issue #6 (error: p not supplied)
 #- task: synopsys-coverity@1
