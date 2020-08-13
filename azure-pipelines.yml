@@ -69,7 +69,7 @@ steps:
     issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
-    allowUntrusted: true
+    allowUntrusted: false
 
 
 # Reproducer for issue #6 (error: p not supplied)
