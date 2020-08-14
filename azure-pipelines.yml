@@ -44,8 +44,10 @@ steps:
 
 - script: |
     cd $(Agent.BuildDirectory)
-    cp $(mntPath)/cov-analysis-linux64-2020.06.tar.gz .
-    cp $(mntPath)/license.dat .
+    curl --user admin:1DB7443FC1626ED938FAC2F9BAE0677D https://coverity-vm.synopsysdemo.net:8443/downloadFile.htm?fn=license.dat
+    curl --user admin:1DB7443FC1626ED938FAC2F9BAE0677D https://coverity-vm.synopsysdemo.net:8443/downloadFile.htm?fn=cov-analysis-linux64-2020.06.tar.gz
+    #cp $(mntPath)/cov-analysis-linux64-2020.06.tar.gz .
+    #cp $(mntPath)/license.dat .
     tar -xzf cov-analysis-linux64-2020.06.tar.gz
     mv cov-analysis-linux64-2020.06 cov-analysis
     cp license.dat ./cov-analysis/bin
