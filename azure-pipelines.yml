@@ -4,10 +4,6 @@
 # https://aka.ms/yaml
 
 variables:
-  resourceGroupName: coverity
-  storageAccountName: coveritystore
-  fileShareName: cov-analysis-share
-  mntPath: /mnt/$(storageAccountName)/$(fileShareName)
   COVERITY_TOOL_HOME: $(Agent.BuildDirectory)/cov-analysis
 
 trigger:
@@ -23,42 +19,29 @@ pool:
 
 steps:
 # Pull Coverity analysis installation from cache
-- task: Cache@2
-  inputs:
-    key: '"_coverity-analysis-2020.06" | "$(Agent.OS)"'
-    path: $(COVERITY_TOOL_HOME)
-    cacheHitVar: CACHE_RESTORED
-  displayName: 'Cache Coverity Tool Installation'
+#- task: Cache@2
+#  inputs:
+#    key: '"coverity-analysis-2020.06" | "$(Agent.OS)"'
+#    path: $(COVERITY_TOOL_HOME)
+#    cacheHitVar: CACHE_RESTORED
+#  displayName: 'Cache Coverity Tool Installation'
 
-# If not cached, install Coverity analysis: mount file share, copy, untar, configure
-- task: AzureCLI@2
-  inputs:
-    azureSubscription: azure-connection
-    scriptType: bash
-    scriptLocation: inlineScript
-    inlineScript: |
-      sh mount-coverity.sh
-      df -h
-  condition: ne(variables.CACHE_RESTORED, 'true')
-  displayName: Azure CLI
-
+# Copy and install Coverity analysis package
 - script: |
     cd $(Agent.BuildDirectory)
-    curl --user admin:1DB7443FC1626ED938FAC2F9BAE0677D -o license.dat https://coverity-vm.synopsysdemo.net:8443/downloadFile.htm?fn=license.dat
-    curl --user admin:1DB7443FC1626ED938FAC2F9BAE0677D -o cov-analysis-linux64-2020.06.tar.gz https://coverity-vm.synopsysdemo.net:8443/downloadFile.htm?fn=cov-analysis-linux64-2020.06.tar.gz
-    #cp $(mntPath)/cov-analysis-linux64-2020.06.tar.gz .
-    #cp $(mntPath)/license.dat .
-    tar -xzf cov-analysis-linux64-2020.06.tar.gz
+    curl -s -L --user admin:$(COVERITY_AUTHKEY) -o license.dat $(COVERITY_URL)/downloadFile.htm?fn=license.dat
+    curl -s -L --user admin:$(COVERITY_AUTHKEY) $(COVERITY_URL)/downloadFile.htm?fn=cov-analysis-linux64-2020.06.tar.gz | tar -xvzf -
     mv cov-analysis-linux64-2020.06 cov-analysis
     cp license.dat ./cov-analysis/bin
   condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Install Coverity'
 
+# Configure Coverity
 - script: | 
     $(COVERITY_TOOL_HOME)/bin/cov-configure --java
     $(COVERITY_TOOL_HOME)/bin/cov-configure --javascript
     $(COVERITY_TOOL_HOME)/bin/cov-configure --gcc
-  condition: ne(variables.CACHE_RESTORED, 'true')
+  #condition: ne(variables.CACHE_RESTORED, 'true')
   displayName: 'Configure Coverity'
 
 # Run Coverity scan
@@ -72,6 +55,9 @@ steps:
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
     buildCommand: 'gcc -o hello hello.c'
     allowUntrusted: false
+    coverityRunType: 'buildanalyzecommit'
+    customCommandArgs: true
+    covAnalyzeArgs: '--all'
 
 
 # Reproducer for issue #6 (error: p not supplied)
@@ -85,6 +71,17 @@ steps:
 #    customCoverityCommands: 'cov-analyze --ident'
 #    allowUntrusted: true
 
+#- task: AzureCLI@2
+#  inputs:
+#    azureSubscription: azure-connection
+#    scriptType: bash
+#    scriptLocation: inlineScript
+#    inlineScript: |
+#      sh mount-coverity.sh
+#      df -h
+#  condition: ne(variables.CACHE_RESTORED, 'true')
+#  displayName: Azure CLI
+
 #- script: |
 #    $(COVERITY_TOOL_HOME)/bin/cov-analyze --ident
 #    $(COVERITY_TOOL_HOME)/bin/cov-configure --config coverity_config.xml --gcc
@@ -96,7 +93,6 @@ steps:
 #- script: $(mntPath)/cov-analysis/bin/cov-analyze --dir idir 
 #  displayName: 'Run Coverity analysis'
 
-#- script: |
-#    echo Add other tasks to build, test, and deploy your project.
-#    echo See https://aka.ms/yaml
-#  displayName: 'Run a multi-line script'
+
+
+
