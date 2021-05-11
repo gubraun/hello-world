@@ -53,7 +53,7 @@ steps:
     checkIssues: false
     issueView: 'Outstanding Issues'
     coverityBuildDirectory: '$(Build.Repository.LocalPath)'
-    buildCommand: 'gcc -o hello hello.c'
+    buildCommand: 'FOO=1 gcc -o hello hello.c'
     allowUntrusted: false
     coverityRunType: 'buildanalyzecommit'
     customCommandArgs: true
